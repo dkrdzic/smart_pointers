@@ -13,6 +13,21 @@ class shared_pointer {
 
         size_t* refCnt;
 
+
+
+        void release() {
+
+            if (refCnt && (*this->refCnt) > 0) {
+                (*this->refCnt)--;
+                
+                if (*(this->refCnt) == 0) {
+                    delete this->pResource;
+                    delete this->refCnt;
+                }
+            }
+
+        }
+
     
     public:
 
@@ -67,14 +82,7 @@ class shared_pointer {
 
             if (this->pResource != other.pResource) { // only when this and other point on different resource
 
-                if (!refCnt)
-                    throw std::runtime_error("Accesing without allocating refCnt!");
-
-                if (*(this->refCnt) == 1) {
-                    delete this->refCnt;
-                    delete this->pResource;
-                } else
-                    this->refCnt--;
+                release();
 
                 this->pResource = other.pResource;
                 this->refCnt = other.refCnt;
@@ -91,6 +99,9 @@ class shared_pointer {
             cout<<"ASSIGN MOVE OPERATOR"<<endl;
 
             if (this->pResource != other.pResource) { // only when this and other point on different resource
+
+
+                release();
 
                 this->pResource = other.pResource;
                 this->refCnt = other.refCnt;
@@ -146,14 +157,7 @@ class shared_pointer {
 
             cout<<"DESTRUCTOR"<<endl;
 
-            if (refCnt && (*this->refCnt) > 0) {
-                (*this->refCnt)--;
-                
-                if (*(this->refCnt) == 0) {
-                    delete this->pResource;
-                    delete this->refCnt;
-                }
-            }
+            release();
         }
 
 };
