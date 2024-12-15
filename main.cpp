@@ -39,7 +39,7 @@ class shared_pointer {
             if (other.pResource != nullptr) {
 
                 if (!refCnt)
-                    throw std::runtime_error("Deleting without allocating refCnt!");
+                    throw std::runtime_error("Accessing without allocating refCnt!");
                 this->pResource = other.pResource;
                 this->refCnt = other.refCnt;
                 (*this->refCnt)++;
