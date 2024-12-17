@@ -17,7 +17,7 @@ class shared_pointer {
 
         void release() {
 
-            if (refCnt && (*this->refCnt) > 0) {
+            if (this->refCnt && (*this->refCnt) > 0) {
                 (*this->refCnt)--;
                 
                 if (*(this->refCnt) == 0) {
